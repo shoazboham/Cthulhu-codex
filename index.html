@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE CALL OF CTHULHU — The Correlated Dossiers</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background Simulation Canvas -->
+  <canvas id="abyssal-canvas"></canvas>
+
+  <!-- CRT / Abyssal Vignette & Dynamic Madness Filter -->
+  <div class="abyssal-vignette"></div>
+  <div class="sanity-darkness"></div>
+
+  <!-- Sticky HUD: Sanity & Eldritch Audio Controls -->
+  <div class="eldritch-hud">
+    <div class="hud-sanity-container">
+      <span class="sanity-label">
+        <span class="sanity-pulse"></span>
+        Coherence:
+      </span>
+      <div class="sanity-meter-bar">
+        <div id="sanity-fill" class="sanity-fill" style="width: 100%;"></div>
+      </div>
+      <span id="sanity-percent" style="font-size: 0.8rem; opacity: 0.85;">100%</span>
+      <button id="btn-laudanum" class="btn-laudanum" title="Administer tincture to calm the nerves">
+        🧪 Dose Laudanum
+      </button>
+    </div>
+
+    <!-- Scroll Depth Indicator -->
+    <div class="hud-depth-container" title="Pelagic descent depth into the Pacific abyss">
+      <span class="depth-sonar-ping"></span>
+      <span id="depth-readout" class="depth-readout">DEPTH: 0m [Surface]</span>
+    </div>
+
+    <div class="hud-audio-container">
+      <button id="btn-audio" class="btn-audio" title="Toggle procedural ocean & drone soundscape">
+        <span>🔇</span> Hydrophone: Muted
+      </button>
+      <button id="btn-test-sound" class="btn-test-sound" title="Strike the R'lyeh Temple Chime to test audio">
+        🔔 Test Toll
+      </button>
+      <div class="volume-slider-box" title="Master Volume">
+        <span style="font-size: 0.75rem;">VOL</span>
+        <input type="range" id="volume-slider" min="0" max="100" value="85" class="hud-vol-slider">
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Hero / The Manifesto -->
+    <header class="hero-manifesto">
+      <div class="manifesto-preamble">Documented Papers of Francis Wayland Thurston • Box #34</div>
+      <h1 class="main-title">CTHULHU</h1>
+      <p class="subtitle">The Dread Titan, R'lyeh, & The Correlated Contents</p>
+
+      <blockquote class="epigraph">
+        “The most merciful thing in the world, I think, is the inability of the human mind to correlate all its contents. We live on a placid island of ignorance in the midst of black seas of infinity, and it was not meant that we should voyage far. The sciences, each straining in its own direction, have hitherto harmed us little; but some day the piecing together of dissociated knowledge will open up such terrifying vistas of reality, and of our frightful position therein, that we shall either go mad from the revelation or flee from the deadly light into the peace and safety of a new dark age.”
+        <cite>— H. P. Lovecraft, <em>The Call of Cthulhu</em> (1926)</cite>
+      </blockquote>
+
+      <!-- Sound Banner / Ambient Activator -->
+      <div id="audio-callout" class="audio-callout">
+        <span class="callout-icon">📡</span>
+        <div class="callout-info">
+          <strong>ABYSSAL HYDROPHONE SOUNDSCAPE AVAILABLE</strong>
+          <span>Synthesizes real-time binaural ocean drones, crashing surf, R'lyeh temple bells, and throat chants.</span>
+        </div>
+        <button id="btn-callout-enable" class="btn-primary" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; white-space: nowrap;">
+          🔊 Enable Soundscape
+        </button>
+      </div>
+    </header>
+
+    <!-- SECTION 1: The Three Correlated Dossiers -->
+    <section class="dossier-section">
+      <div class="section-heading">
+        <span class="section-tag">Archival Evidence</span>
+        <h2 class="section-title">The Three Correlated Dossiers</h2>
+      </div>
+
+      <div class="dossier-wrapper">
+        <div class="dossier-tabs">
+          <button class="tab-btn active" data-tab="dossier-1">
+            <span class="tab-num">DOSSIER I</span>
+            The Horror in Clay
+          </button>
+          <button class="tab-btn" data-tab="dossier-2">
+            <span class="tab-num">DOSSIER II</span>
+            The Tale of Inspector Legrasse
+          </button>
+          <button class="tab-btn" data-tab="dossier-3">
+            <span class="tab-num">DOSSIER III</span>
+            The Madness from the Sea
+          </button>
+        </div>
+
+        <!-- Dossier 1 Content -->
+        <div id="dossier-1" class="tab-content active">
+          <div class="dossier-grid">
+            <div class="dossier-text">
+              <h3>The Wilcox Bas-Relief & The March Delirium</h3>
+              <p>
+                In the spring of 1925, a neurotic young Rhode Island School of Design sculptor named <strong>Henry Anthony Wilcox</strong> presented Professor George Gammell Angell with a damp clay bas-relief. The sculpture depicted a crouching, tentacled monstrosity crowned with rudimentary wings, surrounded by characters of an unknown pictographic tongue.
+              </p>
+              <p>
+                Wilcox had sculpted it in a hypnagogic frenzy during a night pierced by seismic oceanic tremors. Simultaneously, across London, Paris, and Manila, sensitive painters, poets, and dreamers plummeted into acute delirium, speaking of cyclopean cities of dripping green slime.
+              </p>
+              <div class="quote-highlight" data-sanity-drain="4" style="cursor: pointer;" title="Inspect closely (-4 Sanity)">
+                “It seemed to be a sort of monster, or symbol representing a monster, of a form which only a diseased fancy could conceive... A pulpy, tentacled head surmounted a grotesque and scaly body with rudimentary wings.”
+              </div>
+            </div>
+
+            <div class="artifact-card">
+              <div class="artifact-canvas-container">
+                <canvas id="artifact-canvas" width="280" height="230"></canvas>
+              </div>
+              <p class="artifact-caption">
+                Wax facsimile of Wilcox's bas-relief. Note the squid-like cephalopod cranial structure and tripartite ocular arrangement.
+              </p>
+              <span class="sanity-cost-badge">TELEPATHIC RESONANCE: ACTIVE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dossier 2 Content -->
+        <div id="dossier-2" class="tab-content">
+          <div class="dossier-grid">
+            <div class="dossier-text">
+              <h3>The Louisiana Bayou Raid (1907) & The Aklo Chant</h3>
+              <p>
+                Eighteen years before Wilcox's fever, New Orleans police inspector <strong>John Raymond Legrasse</strong> raided an unholy nocturnal orgy in the impassable swamps south of New Orleans. Savages and half-castes danced around a mound topped by an identical greenish-black stone statuette.
+              </p>
+              <p>
+                Under interrogation, the octogenarian mestizo <strong>Castro</strong> revealed the truth: the Great Old Ones were not native to Earth. They filtered down from the stars when the world was young, and now lie dormant inside their sunken stone citadel, preserved by the spells of their High Priest.
+              </p>
+
+              <!-- Aklo Linguistic Tool -->
+              <div class="aklo-chant-block">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1.2rem;">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.2em; color: var(--accent-eldritch);">
+                    TRANSLITERATED RITUAL LITURGY (CLICK SYLLABLES TO PRONOUNCE & DECODE):
+                  </span>
+                  <button id="btn-recite-all" class="btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+                    <span>🕯️</span> Chant Full Liturgy
+                  </button>
+                </div>
+                <div class="chant-phrase">
+                  <div class="aklo-item">
+                    <span class="aklo-word" data-word="Ph'nglui">Ph'nglui</span>
+                    <span class="phonetic-sub">[f'n-GLOO-ee]</span>
+                  </div>
+                  <div class="aklo-item">
+                    <span class="aklo-word" data-word="mglw'nafh">mglw'nafh</span>
+                    <span class="phonetic-sub">[m-glw-NAHF]</span>
+                  </div>
+                  <div class="aklo-item">
+                    <span class="aklo-word" data-word="Cthulhu">Cthulhu</span>
+                    <span class="phonetic-sub">[kh-LOOL-hloo]</span>
+                  </div>
+                  <div class="aklo-item">
+                    <span class="aklo-word" data-word="R'lyeh">R'lyeh</span>
+                    <span class="phonetic-sub">[r-lee-YEH]</span>
+                  </div>
+                  <div class="aklo-item">
+                    <span class="aklo-word" data-word="wgah'nagl">wgah'nagl</span>
+                    <span class="phonetic-sub">[w-gah-NAH-gull]</span>
+                  </div>
+                  <div class="aklo-item">
+                    <span class="aklo-word" data-word="fhtagn">fhtagn.</span>
+                    <span class="phonetic-sub">[fh-TAHN]</span>
+                  </div>
+                </div>
+                <div id="translation-result" class="translation-result">
+                  <div class="word-literal">Select any word from the liturgy above to inspect its Aklo etymology and hear its vocal pronunciation.</div>
+                  <div class="word-implication">“In his house at R'lyeh, dead Cthulhu waits dreaming.”</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="artifact-card">
+              <div style="padding: 1rem; background: #030809; border: 1px solid #1a302a; margin-bottom: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;">
+                <p style="color: var(--accent-biolum); margin-bottom: 0.5rem;">[TRANSCRIPTION FROM CASTRO]</p>
+                <p style="color: #c9bea7; line-height: 1.6;">
+                  “They had indeed come himself and his fellows from the stars, but their houses were in great cities under the waves. They could not live now, yet they could never truly die. They lay all those millions of years slumbering till the secret priests should take Great Cthulhu from his tomb...”
+                </p>
+              </div>
+              <p class="artifact-caption">
+                Confession recorded November 2, 1907. Inspector Legrasse's badge #144-B.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dossier 3 Content -->
+        <div id="dossier-3" class="tab-content">
+          <div class="dossier-grid">
+            <div class="dossier-text">
+              <h3>The Log of Gustaf Johansen & Point Nemo</h3>
+              <p>
+                On March 23, 1925, the two-masted schooner <em>Emma</em> encountered the cultist vessel <em>Alert</em> in the remote South Pacific. Following a deadly skirmish, second mate <strong>Gustaf Johansen</strong> sailed the captured ship to charted coordinates:
+              </p>
+              <p style="font-family: 'JetBrains Mono', monospace; color: var(--accent-biolum); font-size: 1.1rem;">
+                📍 47° 9′ S, 126° 43′ W — The Oceanic Pole of Inaccessibility.
+              </p>
+              <p>
+                There, rising above the waves, stood the nightmare corpse-city of <strong>R'lyeh</strong>. Johansen described cyclopean masonry of slimy green basalt, vast monoliths where angles were acute yet behaved as obtuse, and a catastrophic portal sealed by a gargantuan carved lintel.
+              </p>
+              <p>
+                When the seal gave way, the Thing burst forth. Johansen was the sole survivor, saving his vessel only by ramming the steel prow of the <em>Alert</em> straight into the nebulous titan's gelatinous head.
+              </p>
+            </div>
+
+            <div class="artifact-card">
+              <div style="padding: 1.2rem; background: #080f11; border: 1px solid #19362f;">
+                <h4 style="font-family: 'Cinzel', serif; color: var(--accent-blood-glow); margin-bottom: 0.5rem;">The Ramming of the Alert</h4>
+                <p style="font-size: 0.95rem; color: #beb29c; line-height: 1.6;">
+                  “There was a mighty eddying and churning in the water, and Johansen drove the vessel straight at the pulpy monster. The awful squid-head yielded with a burst as of a bursting sunfish... but even as the steamer plowed on, the scattered jelly reconstituted, grim and immortal.”
+                </p>
+              </div>
+              <p class="artifact-caption">
+                Johansen died mysteriously in Oslo in 1926 shortly after penning this manuscript.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Astrolabe - When the Stars are Right -->
+    <section class="astrolabe-section">
+      <div class="section-heading">
+        <span class="section-tag">Astrological Resonance</span>
+        <h2 class="section-title">When the Stars Are Right</h2>
+      </div>
+      <p style="max-width: 680px; margin: 0 auto; color: #b3a995;">
+        Cthulhu cannot walk the Earth at will. He is bound by cosmic cycles: galactic alignments that modulate terrestrial gravimetric and dimensional resonance. Rotate the celestial astrolabe to seek the dreadful alignment.
+      </p>
+
+      <div class="astrolabe-ui">
+        <div class="astrolabe-wheel-wrapper">
+          <canvas id="astrolabe-canvas" width="320" height="320"></canvas>
+        </div>
+
+        <div class="astrolabe-controls">
+          <label for="astrolabe-slider" style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin-bottom: 0.5rem; color: var(--text-muted);">
+            ROTATE CELESTIAL MERIDIAN
+          </label>
+          <input type="range" id="astrolabe-slider" class="astrolabe-slider" min="0" max="100" value="15">
+          <div id="alignment-status" class="alignment-status">Alignment with Dread Meridian: 15%</div>
+        </div>
+
+        <div id="rlyeh-status-banner" class="rlyeh-status-banner">
+          Status: Submerged beneath 3,000 fathoms of pelagic pressure.
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Non-Euclidean Archway 3D Interactive Canvas -->
+    <section class="geometry-section">
+      <div class="section-heading">
+        <span class="section-tag">Spatial Topology</span>
+        <h2 class="section-title">The Dread Non-Euclidean Geometry</h2>
+      </div>
+
+      <div class="geometry-grid">
+        <div class="geometry-canvas-box">
+          <canvas id="geometry-canvas" width="480" height="380"></canvas>
+          <div class="geometry-hint">CLICK & DRAG TO WARP TOPOLOGY</div>
+        </div>
+
+        <div class="geometry-notes">
+          <h4>The Physics of Impossible Angles</h4>
+          <p>
+            Lovecraft repeatedly noted that R'lyeh was built according to <em>non-Euclidean geometry</em>. In terrestrial 3-space, the interior angles of a triangle always sum to 180°, and parallel lines never converge.
+          </p>
+          <p>
+            Inside R'lyeh, space curvature is hyper-Riemannian or projected from a fourth spatial dimension. A human observing a wall perceives a plane surface, yet stepping upon it causes them to slip sideways as gravity re-orientates toward an unseen focal point.
+          </p>
+          <div class="quote-highlight" data-sanity-drain="6" style="cursor: pointer;" title="Contemplate the geometry (-6 Sanity)">
+            “He had said that the geometry of the dream-place he saw was abnormal, non-Euclidean, and loathsomely redolent of spheres and dimensions apart from ours.”
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Deep Cosmological Insights -->
+    <section class="insights-section">
+      <div class="section-heading">
+        <span class="section-tag">Philosophical Exegesis</span>
+        <h2 class="section-title">Four Pillars of Cosmic Dread</h2>
+      </div>
+
+      <div class="insights-grid">
+        <!-- Insight 1 -->
+        <article class="insight-card" data-sanity-drain="5">
+          <div class="insight-icon">🪐</div>
+          <h3>Cosmic Indifferentism</h3>
+          <p>
+            Traditional religion and Gothic fiction presume the universe cares about humanity—whether as beloved children or prey. In Lovecraft’s cosmos, there is neither benevolence nor malevolence. Humanity is an ephemeral biological fungus on a dying rock. Cthulhu’s waking spells our doom not from malice, but sheer atmospheric displacement.
+          </p>
+          <span class="sanity-cost-badge">TAP TO ABSORB TRUTH (-5 SANITY)</span>
+        </article>
+
+        <!-- Insight 2 -->
+        <article class="insight-card" data-sanity-drain="7">
+          <div class="insight-icon">📿</div>
+          <h3>The Priest, Not the Sovereign</h3>
+          <p>
+            Popular culture misidentifies Cthulhu as the supreme godhead. Within the true mythos, Cthulhu is merely the <em>High Priest</em>. Far above him lie the blind, mindless Outer Gods: <strong>Azathoth</strong>, boiling in nuclear chaos at the center of infinity, and <strong>Yog-Sothoth</strong>, the coterminous continuum. Cthulhu himself bows to forces beyond our comprehension.
+          </p>
+          <span class="sanity-cost-badge">TAP TO ABSORB TRUTH (-7 SANITY)</span>
+        </article>
+
+        <!-- Insight 3 -->
+        <article class="insight-card" data-sanity-drain="6">
+          <div class="insight-icon">⏳</div>
+          <h3>Deep Time & Relativistic Biology</h3>
+          <p>
+            <em>“With strange eons even death may die.”</em> Terrestrial biology defines life and death through cellular metabolic entropy. The Great Old Ones are composed of non-baryonic, trans-dimensional substances immune to thermal decay. Dormancy spanning half a billion years is not death, but an alien temporal phase.
+          </p>
+          <span class="sanity-cost-badge">TAP TO ABSORB TRUTH (-6 SANITY)</span>
+        </article>
+
+        <!-- Insight 4 -->
+        <article class="insight-card" data-sanity-drain="8">
+          <div class="insight-icon">👁️</div>
+          <h3>Madness as Objective Realism</h3>
+          <p>
+            In Lovecraft's worldview, sanity is an evolutionary delusion—a necessary sensory filter keeping primates from perceiving the terrifying higher-dimensional predator-prey reality surrounding them. "Madness" is not cognitive dysfunction; it is the mind functioning with absolute, unshielded clarity.
+          </p>
+          <span class="sanity-cost-badge">TAP TO ABSORB TRUTH (-8 SANITY)</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mythos-footer">
+      <p class="footer-quote">
+        “We shall either go mad from the revelation or flee from the deadly light into the peace and safety of a new dark age.”
+      </p>
+      <p>
+        <a class="coordinates-link" href="https://en.wikipedia.org/wiki/Pole_of_inaccessibility#Oceanic_pole_of_inaccessibility" target="_blank" rel="noopener">
+          COORDINATES: 47°9′S 126°43′W • POINT NEMO
+        </a>
+      </p>
+      <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.6;">
+        An Interactive Inquest into the Canon of Howard Phillips Lovecraft (1890–1937).
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Hallucination Overlay (Triggered at 0% Sanity) -->
+  <div id="hallucination-modal" class="hallucination-modal">
+    <div class="hallucination-box">
+      <h2>COGNITIVE COHERENCE ZERO</h2>
+      <p>
+        The veil of human perception has torn asunder. You gaze into the cyclopean basalt gates of R'lyeh. The geometry melts into sickening acute angles. The sleeper stirs beneath the abyssal black waves.
+      </p>
+      <div class="hallucination-actions">
+        <button id="btn-recover" class="btn-primary">Administer Emergency Laudanum</button>
+        <button id="btn-awaken" class="btn-laudanum" style="color: #ff5566; border-color: #ff5566;">Submit to the Dream</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="audio.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

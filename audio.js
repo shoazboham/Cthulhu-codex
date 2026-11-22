@@ -350,7 +350,7 @@ class EldritchAudioEngine {
       const utterance = new SpeechSynthesisUtterance(config.text);
       utterance.pitch = config.pitch;
       utterance.rate = config.rate;
-      utterance.volume = 1.0;
+      utterance.volume = 0.42; // Soft, eerie cultist murmur instead of blaring volume
 
       const voices = window.speechSynthesis.getVoices();
       if (voices && voices.length > 0) {
@@ -384,7 +384,7 @@ class EldritchAudioEngine {
     const osc1 = this.ctx.createOscillator();
     osc1.type = 'sawtooth';
     osc1.frequency.setValueAtTime(fundamental, t);
-    osc1.frequency.linearRampToValueAtTime(fundamental * 0.98, t + 1.6);
+    osc1.frequency.linearRampToValueAtTime(fundamental * 0.98, t + 1.4);
 
     const osc2 = this.ctx.createOscillator();
     osc2.type = 'triangle';
@@ -397,39 +397,40 @@ class EldritchAudioEngine {
     const fChest = this.ctx.createBiquadFilter();
     fChest.type = 'peaking';
     fChest.frequency.setValueAtTime(550, t);
-    fChest.Q.setValueAtTime(2.0, t);
-    fChest.gain.setValueAtTime(10, t);
+    fChest.Q.setValueAtTime(1.8, t);
+    fChest.gain.setValueAtTime(3, t); // Gentle warm resonance
 
     const fThroat = this.ctx.createBiquadFilter();
     fThroat.type = 'peaking';
-    fThroat.frequency.setValueAtTime(1400, t);
-    fThroat.Q.setValueAtTime(2.2, t);
-    fThroat.gain.setValueAtTime(12, t);
+    fThroat.frequency.setValueAtTime(1300, t);
+    fThroat.Q.setValueAtTime(1.8, t);
+    fThroat.gain.setValueAtTime(4, t); // Clear intelligibility without harsh spike
 
     const chantGain = this.ctx.createGain();
-    chantGain.gain.setValueAtTime(0.01, t);
-    chantGain.gain.linearRampToValueAtTime(0.85, t + 0.08);
-    chantGain.gain.setValueAtTime(0.75, t + 0.8);
-    chantGain.gain.exponentialRampToValueAtTime(0.001, t + 1.8);
+    chantGain.gain.setValueAtTime(0.005, t);
+    chantGain.gain.linearRampToValueAtTime(0.24, t + 0.1); // Balanced, smooth level
+    chantGain.gain.setValueAtTime(0.18, t + 0.6);
+    chantGain.gain.exponentialRampToValueAtTime(0.001, t + 1.5);
 
     osc1.connect(fChest);
     osc2.connect(fChest);
     oscSub.connect(fChest);
     fChest.connect(fThroat);
     fThroat.connect(chantGain);
-    chantGain.connect(this.masterGain);
+    chantGain.connect(this.compressor); // Route through compressor for smooth limiter
 
     osc1.start(t);
     osc2.start(t);
     oscSub.start(t);
-    osc1.stop(t + 1.85);
-    osc2.stop(t + 1.85);
-    oscSub.stop(t + 1.85);
+    osc1.stop(t + 1.55);
+    osc2.stop(t + 1.55);
+    oscSub.stop(t + 1.55);
 
-    this.playEldritchToll(fundamental * 2);
+    // Accompany with soft, distant bell chime
+    this.playEldritchToll(fundamental * 2, 0.35);
   }
 
-  async playEldritchToll(pitch = 261.63) {
+  async playEldritchToll(pitch = 261.63, volumeScale = 1.0) {
     await this.init();
     if (this.ctx.state === 'suspended') await this.ctx.resume();
 
@@ -447,8 +448,8 @@ class EldritchAudioEngine {
       filter.type = 'highpass';
       filter.frequency.setValueAtTime(180, t);
 
-      const amp = 0.28 / (idx + 1);
-      const decay = 2.2 + (idx * 0.25);
+      const amp = (0.16 * volumeScale) / (idx + 1);
+      const decay = 2.0 + (idx * 0.25);
 
       gain.gain.setValueAtTime(amp, t);
       gain.gain.exponentialRampToValueAtTime(0.0001, t + decay);
